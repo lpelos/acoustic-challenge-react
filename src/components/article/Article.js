@@ -1,4 +1,5 @@
 import React from 'react';
+import * as moment from 'moment';
 
 import './Article.scss';
 
@@ -43,8 +44,8 @@ const ArticleContent = ({ article }) => {
 const ArticleDate = ({ article }) => {
   if (!article.date) { return null; }
 
-  // TODO: format date
-  return <span className="date">{article.date.toString()}</span>;
+  const formatedDate = moment(article.date).utcOffset(3).format('lll');
+  return <span className="date">{formatedDate}</span>;
 };
 
 const ArticleError = ({ error, params }) => {
