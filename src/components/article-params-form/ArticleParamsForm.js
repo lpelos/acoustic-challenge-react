@@ -2,7 +2,7 @@ import React from 'react';
 
 import './ArticleParamsForm.scss';
 
-import Input from '../Input';
+import Input from '../input';
 
 const UUID_REGEXP = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 

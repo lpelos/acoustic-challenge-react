@@ -4,7 +4,7 @@ import ReactDOM from 'react-dom';
 import './assets/styles/bootstrap-overrides.scss';
 import './index.scss';
 
-import App from './app/App';
+import App from './components/app';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(<App />, document.getElementById('root'));

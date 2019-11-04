@@ -1,9 +1,10 @@
 import React from 'react';
 
-import logo from '../assets/images/logo.png';
+import logo from '../../assets/images/logo.png';
 import './App.scss';
 
-import ArticleParamsForm from './ArticleParamsForm';
+import Article from '../article';
+import ArticleParamsForm from '../article-params-form';
 
 class App extends React.Component {
   constructor(props) {
@@ -36,7 +37,7 @@ class App extends React.Component {
         </nav>
 
         {!articleParams && <ArticleParamsForm onSubmit={this.handleParamsSubmit} />}
-        {articleParams && <p>TODO: Article component</p>}
+        {articleParams && <Article params={articleParams} />}
       </div>
     );
   }
