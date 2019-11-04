@@ -12,7 +12,12 @@ class App extends React.Component {
 
     this.state = { articleParams: null };
 
+    this.handleClose = this.handleClose.bind(this);
     this.handleParamsSubmit = this.handleParamsSubmit.bind(this);
+  }
+
+  handleClose() {
+    this.setState({ articleParams: null });
   }
 
   handleParamsSubmit(articleParams) {
@@ -37,7 +42,7 @@ class App extends React.Component {
         </nav>
 
         {!articleParams && <ArticleParamsForm onSubmit={this.handleParamsSubmit} />}
-        {articleParams && <Article params={articleParams} />}
+        {articleParams && <Article params={articleParams} onClose={this.handleClose} />}
       </div>
     );
   }
