@@ -1,0 +1,24 @@
+@import './assets/styles/variables';
+@import './assets/styles/bootstrap-overrides';
+
+a {
+  cursor: pointer;
+}
+
+body,
+html,
+#root {
+  height: 100%;
+}
+
+body {
+  font-family: 'Exo 2', Helvetica, Arial, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Neuton', 'Times New Roman', serif;
+}
+
+.text-secondary {
+  color: $color-text-secondary;
+}
