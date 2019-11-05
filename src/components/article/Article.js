@@ -1,5 +1,5 @@
+import moment from 'moment';
 import React from 'react';
-import * as moment from 'moment';
 
 import './Article.scss';
 
@@ -171,7 +171,7 @@ class Article extends React.Component {
   constructor(props) {
     super(props);
 
-    this.service = new ArticleService();
+    this.service = props.articleService || new ArticleService();
 
     this.state = {
       article: null,
