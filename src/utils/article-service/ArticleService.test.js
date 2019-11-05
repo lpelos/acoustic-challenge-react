@@ -12,7 +12,7 @@ beforeEach(() => {
   const mockResourceUrl = jest.fn().mockReturnValue(mockMainImageUrl);
 
   mockClient = { contentItem: mockContentItem, resourceUrl: mockResourceUrl };
-  service = new ArticleService({ client: mockClient });
+  service = new ArticleService(mockClient);
 });
 
 it('should initialize without crashing', () => {

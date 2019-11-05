@@ -3,9 +3,7 @@ import Article from '../../utils/Article';
 import ArticleImage from '../../utils/ArticleImage';
 
 class ArticleService {
-  constructor({
-    client = new AcousticContentClient(),
-  }) {
+  constructor(client = new AcousticContentClient()) {
     this.client = client;
   }
 
