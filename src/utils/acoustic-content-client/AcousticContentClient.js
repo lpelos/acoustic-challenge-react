@@ -11,13 +11,16 @@ class AcousticContentClient {
   contentItem(contentHubId, contentId) {
     const url = contentItemUrl(contentHubId, contentId);
 
-    return request(url).then(null, err => {
-      const status = err && err.response && err.response.status;
-      switch (status) {
-        case 404: return Promise.reject(new AcousticContentNotFoundError());
-        default: return Promise.reject(new AcousticContentUnexpectedError());
-      }
-    });
+    return request(url).then(
+      response => response.data,
+      err => {
+        const status = err && err.response && err.response.status;
+        switch (status) {
+          case 404: return Promise.reject(new AcousticContentNotFoundError());
+          default: return Promise.reject(new AcousticContentUnexpectedError());
+        }
+      },
+    );
   }
 
   resourceUrl(resourceUrl) {
