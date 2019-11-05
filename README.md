@@ -1,8 +1,8 @@
 # Acoustic Code Challenge in React
 
-This is a code challenge made for [Acoustic](https://acoustic.co/) which
-consists in a SPA application that consumes Acoustic Content APIs and renders
-the content returned using React.
+This is a code challenge built in two days for [Acoustic](https://acoustic.co/)
+which consists in a SPA application that consumes Acoustic Content APIs and
+renders the content returned using React.
 
 ![Demo](https://raw.githubusercontent.com/lpelos/acoustic-challenge-react/master/src/assets/images/demo.gif)
 
