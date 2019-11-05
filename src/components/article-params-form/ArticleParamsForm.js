@@ -23,7 +23,7 @@ class ArticleParamsForm extends React.Component {
   errorMessage(fieldName) {
     const value = this.state.value[fieldName];
     if (!value || !value.trim()) { return 'cannot be blank'; }
-    if (!UUID_REGEXP.test(value)) { return 'invalid UUDI'; }
+    if (!UUID_REGEXP.test(value)) { return 'invalid UUID'; }
     return null;
   }
 
@@ -39,9 +39,7 @@ class ArticleParamsForm extends React.Component {
     event.preventDefault();
 
     const { onSubmit } = this.props;
-    if (!onSubmit) { return; }
-
-    // TODO: validate
+    if (!onSubmit || !this.isValid()) { return; }
 
     const { contentHubId, contentId } = this.state.value;
     onSubmit({ contentHubId, contentId });

@@ -8,7 +8,6 @@ const Input = (props) => {
     label = '',
     name = '',
     placeholder = '',
-    required = false,
     touched = false,
     valid = true,
     value = '',
@@ -34,7 +33,6 @@ const Input = (props) => {
         id={id}
         name={name}
         placeholder={placeholder}
-        required={required}
         type="text"
         value={value}
         onBlur={e => onBlur && onBlur(e)}
