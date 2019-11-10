@@ -168,16 +168,15 @@ const ArticleMetadata = ({ article }) => {
 };
 
 class Article extends React.Component {
+  state = {
+    article: null,
+    error: null,
+    isLoading: false,
+  };
+
   constructor(props) {
     super(props);
-
     this.service = props.articleService || new ArticleService();
-
-    this.state = {
-      article: null,
-      error: null,
-      isLoading: false,
-    };
   }
 
   componentDidMount() {

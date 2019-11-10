@@ -7,18 +7,10 @@ import Input from '../input';
 const UUID_REGEXP = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
 
 class ArticleParamsForm extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      touched: { contentHubId: false, contentId: false },
-      value: { contentHubId: '', contentId: '' },
-    };
-
-    this.handleBlur = this.handleBlur.bind(this);
-    this.handleChange = this.handleChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-  }
+  state = {
+    touched: { contentHubId: false, contentId: false },
+    value: { contentHubId: '', contentId: '' },
+  };
 
   errorMessage(fieldName) {
     const value = this.state.value[fieldName];
@@ -59,7 +51,7 @@ class ArticleParamsForm extends React.Component {
     return (
       <form
         className="ArticleParamsForm card mx-auto"
-        onSubmit={this.handleSubmit}
+        onSubmit={e => this.handleSubmit(e)}
       >
         <header className="card-header">
           <h1 className="card-title">Acoustic Content Renderer</h1>
@@ -88,8 +80,8 @@ class ArticleParamsForm extends React.Component {
             touched={touched.contentHubId}
             valid={!this.errorMessage('contentHubId')}
             value={value.contentHubId}
-            onBlur={this.handleBlur.bind(this, 'contentHubId')}
-            onChange={this.handleChange.bind(this, 'contentHubId')}
+            onBlur={() => this.handleBlur('contentHubId')}
+            onChange={v => this.handleChange('contentHubId', v)}
           />
 
           <Input
@@ -102,8 +94,8 @@ class ArticleParamsForm extends React.Component {
             touched={touched.contentId}
             valid={!this.errorMessage('contentId')}
             value={value.contentId}
-            onBlur={this.handleBlur.bind(this, 'contentId')}
-            onChange={this.handleChange.bind(this, 'contentId')}
+            onBlur={() => this.handleBlur('contentId')}
+            onChange={v => this.handleChange('contentId', v)}
           />
         </main>
 

@@ -7,14 +7,7 @@ import Article from '../article';
 import ArticleParamsForm from '../article-params-form';
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-
-    this.state = { articleParams: null };
-
-    this.handleClose = this.handleClose.bind(this);
-    this.handleParamsSubmit = this.handleParamsSubmit.bind(this);
-  }
+  state = { articleParams: null };
 
   handleClose() {
     this.setState({ articleParams: null });
@@ -41,8 +34,14 @@ class App extends React.Component {
           </a>
         </nav>
 
-        {!articleParams && <ArticleParamsForm onSubmit={this.handleParamsSubmit} />}
-        {articleParams && <Article params={articleParams} onClose={this.handleClose} />}
+        {!articleParams && <ArticleParamsForm
+          onSubmit={params => this.handleParamsSubmit(params)}
+        />}
+
+        {articleParams && <Article
+          params={articleParams}
+          onClose={() => this.handleClose()}
+        />}
       </div>
     );
   }
