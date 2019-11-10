@@ -28,11 +28,15 @@ class ArticleParamsForm extends React.Component {
   }
 
   handleBlur(fieldName) {
-    this.setState({ touched: { ...this.state.touched, [fieldName]: true } });
+    this.setState(state => {
+      return { touched: { ...state.touched, [fieldName]: true } };
+    });
   }
 
   handleChange(fieldName, value) {
-    this.setState({ value: { ...this.state.value, [fieldName]: value } });
+    this.setState(state => {
+      return { value: { ...state.value, [fieldName]: value } };
+    });
   }
 
   handleSubmit(event) {
