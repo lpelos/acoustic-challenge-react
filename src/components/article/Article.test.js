@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, unmountComponentAtNode } from 'react-dom';
 import { act } from 'react-dom/test-utils';
+
+import { mount, shallow } from 'enzyme';
 
 import {
   AcousticContentNotFoundError,
@@ -34,103 +35,93 @@ const mockArticle = new ArticleModel({
   }),
 });
 
-let container;
 let mockService;
+let wrapper;
 
 beforeEach(() => {
-  container = document.createElement('div');
-  document.body.appendChild(container);
-
   const mockFind = jest.fn().mockResolvedValue(mockArticle);
   mockService = { find: mockFind };
 });
 
 afterEach(() => {
-  unmountComponentAtNode(container);
-  container.remove();
-  container = null;
+  mockService = null;
+  wrapper = null;
 });
 
 it('renders without crashing', () => {
-  render(
-    <Article articleService={mockService} params={mockParams} />,
-    container
+  wrapper = shallow(
+    <Article articleService={mockService} params={mockParams} />
   );
-});
-
-it('should fetch Article', () => {
-  act(() => {
-    render(
-      <Article articleService={mockService} params={mockParams} />,
-      container
-    );
-  })
-
-  expect(mockService.find).toHaveBeenCalledTimes(1);
-  expect(mockService.find).toHaveBeenCalledWith(mockParams);
+  expect(wrapper).toBeTruthy();
 });
 
 it('should render Article', async () => {
   await act(async () => {
-    render(
-      <Article articleService={mockService} params={mockParams} />,
-      container
+    wrapper = mount(
+      <Article articleService={mockService} params={mockParams} />
     );
   });
+  wrapper.update();
 
-  const heading = container.querySelector('h1');
-  expect(heading.textContent).toBe(mockArticle.heading);
+  const heading = wrapper.find('h1');
+  expect(heading.first().text()).toBe(mockArticle.heading);
 
-  const author = container.querySelector('.author');
-  expect(author.textContent).toBe(mockArticle.author);
+  const author = wrapper.find('.author');
+  expect(author.first().text()).toBe(mockArticle.author);
 
-  const date = container.querySelector('.date');
-  expect(date.textContent).toBe(mockFormatedDate);
+  const date = wrapper.find('.date');
+  expect(date.first().text()).toBe(mockFormatedDate);
 
-  const figure = container.querySelector('.figure');
+  const figure = wrapper.find('.figure');
   const { mainImage } = mockArticle;
 
-  const image = figure.querySelector('img');
-  expect(image.getAttribute('alt')).toBe(mainImage.caption);
-  expect(image.getAttribute('src')).toBe(mainImage.url);
+  const image = figure.find('img');
+  expect(image.prop('alt')).toBe(mainImage.caption);
+  expect(image.prop('src')).toBe(mainImage.url);
 
-  const caption = figure.querySelector('figcaption');
-  expect(caption.textContent).toBe(mainImage.caption);
+  const caption = figure.find('figcaption');
+  expect(caption.first().text()).toBe(mainImage.caption);
 
-  const credit = figure.querySelector('.credit');
-  expect(credit.textContent).toBe(mainImage.credit);
+  const credit = figure.find('.credit');
+  expect(credit.first().text()).toBe(mainImage.credit);
 
-  container.querySelectorAll('.body section').forEach((section, i) => {
+  const sections = wrapper.find('.body section')
+  expect(sections).toHaveLength(mockArticle.body.length);
+
+  Object.keys(sections).forEach((key, i) => {
+    const section = sections[key];
     expect(mockArticle.body[i]).toContain(section.textContent);
   });
 });
 
 it('should show 404 error', async () => {
-  const mockFind = jest.fn().mockRejectedValue(new AcousticContentNotFoundError());
+  const err = new AcousticContentNotFoundError();
+  const mockFind = jest.fn().mockRejectedValue(err);
   mockService = { find: mockFind };
 
   await act(async () => {
-    render(
-      <Article articleService={mockService} params={mockParams} />,
-      container
+    wrapper = mount(
+      <Article articleService={mockService} params={mockParams} />
     );
   });
+  wrapper.update();
 
-  const error = container.querySelector('.not-found-error');
-  expect(error).toBeTruthy();
+  const error = wrapper.find('.not-found-error');
+  expect(error).toHaveLength(1);
 });
 
 it('should show unexpected error', async () => {
-  const mockFind = jest.fn().mockRejectedValue(new AcousticContentUnexpectedError());
+  const err = new AcousticContentUnexpectedError();
+  const mockFind = jest.fn().mockRejectedValue(err);
   mockService = { find: mockFind };
 
   await act(async () => {
-    render(
-      <Article articleService={mockService} params={mockParams} />,
-      container
+    wrapper = mount(
+      <Article articleService={mockService} params={mockParams} />
     );
   });
+  wrapper.update();
 
-  const error = container.querySelector('.unexpected-error');
-  expect(error).toBeTruthy();
+  const error = wrapper.find('.unexpected-error');
+  expect(error).toHaveLength(1);
 });

@@ -4,12 +4,37 @@ import React from 'react';
 import './Article.scss';
 
 import { AcousticContentNotFoundError } from '../../utils/acoustic-content-client';
-import ArticleService from '../../utils/article-service';
+import useArticle from '../../hooks/use-article';
+
+const Article = ({ articleService, params = {}, onClose }) => {
+  const { contentHubId, contentId } = params;
+
+  const { article, error, isLoading } = useArticle({
+    articleService,
+    contentHubId,
+    contentId,
+  });
+
+  if (isLoading) {
+    return <p className="loading text-center my-5">Loading content...</p>;
+  }
+
+  return (
+    <div className="Article">
+      <ArticleContent article={article} />
+      <ArticleError error={error} params={params} />
+
+      <button className="btn btn-link mb-4" onClick={onClose} type="button">
+        {'<'} Go back
+      </button>
+    </div>
+  );
+};
 
 const ArticleAuthor = ({ article }) => {
   if (!article.author) { return null; }
   return <span>By <em className="author">{article.author}</em></span>;
-}
+};
 
 const ArticleBody = ({ article }) => {
   if (!article.body || article.body.length === 0) {
@@ -23,7 +48,7 @@ const ArticleBody = ({ article }) => {
       })}
     </main>
   )
-}
+};
 
 const ArticleBodyItem = ({ html }) => {
   return <section dangerouslySetInnerHTML={{ __html: html }}></section>
@@ -67,7 +92,7 @@ const ArticleError = ({ error, params }) => {
       {errorType !== 'notFound' && <ArticleUnexpectedError params={params} />}
     </div>
   );
-}
+};
 
 const ArticleNotFoundError = ({ params }) => {
   return (
@@ -102,7 +127,7 @@ const ArticleUnexpectedError = ({ params }) => {
       </p>
     </div>
   );
-}
+};
 
 const ArticleHeader = ({ article }) => {
   return (
@@ -164,61 +189,7 @@ const ArticleMetadata = ({ article }) => {
       <ArticleAuthor article={article} />
       <ArticleDate article={article} />
     </p>
-  )
+  );
 };
-
-class Article extends React.Component {
-  state = {
-    article: null,
-    error: null,
-    isLoading: false,
-  };
-
-  constructor(props) {
-    super(props);
-    this.service = props.articleService || new ArticleService();
-  }
-
-  componentDidMount() {
-    this.fetchArticle();
-  }
-
-  fetchArticle() {
-    this.setState({
-      article: null,
-      error: null,
-      isLoading: true,
-    });
-
-    if (!this.props.params) { return; }
-
-    const { contentHubId, contentId } = this.props.params;
-
-    this.service.find({ contentHubId, contentId }).then(
-      article => { this.setState({ article, isLoading: false }); },
-      error => { this.setState({ error, isLoading: false }); },
-    );
-  }
-
-  render() {
-    const { onClose, params } = this.props;
-    const { article, error, isLoading } = this.state;
-
-    if (isLoading) {
-      return <p className="loading text-center my-5">Loading content...</p>;
-    }
-
-    return (
-      <div className="Article">
-        <ArticleContent article={article} />
-        <ArticleError error={error} params={params} />
-
-        <button className="btn btn-link mb-4" onClick={onClose} type="button">
-          {'<'} Go back
-        </button>
-      </div>
-    );
-  }
-}
 
 export default Article;
